@@ -11,14 +11,10 @@ function App() {
     { id: 1, text: "운동하기", checked: true },
   ]);
 
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    setTodos([
-      { id: lastId.current, text: form.todo.value, checked: false },
-      ...todos,
-    ]);
-    lastId++;
+  const addTodo = (text) => {
+    const todo = { id: lastId.current, text, checked: false };
+    setTodos([todo, ...todos]);
+    lastId.current++;
   };
 
   const removeTodo = (seletedId) => {
@@ -35,7 +31,7 @@ function App() {
 
   return (
     <>
-      <TodoWriteForm handleOnSubmit={handleOnSubmit} />
+      <TodoWriteForm addTodo={addTodo} />
 
       <TodoList todos={todos} removeTodo={removeTodo} toggleTodo={toggleTodo} />
     </>

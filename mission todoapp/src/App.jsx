@@ -3,37 +3,36 @@ import TodoList from "./components/TodoList";
 import TodoWriteForm from "./components/TodoWriteForm";
 
 function App() {
-  const lastId = useRef(4);
-
   const [todos, setTodos] = useState([
-    { id: 3, text: "공부하기", checked: true },
-    { id: 2, text: "코딩하기", checked: false },
-    { id: 1, text: "운동하기", checked: true },
+    { id: 1, todo: "할일1", completed: true },
+    { id: 2, todo: "할일2", completed: false },
+    { id: 3, todo: "할일3", completed: false },
   ]);
 
-  const addTodo = (text) => {
-    const todo = { id: lastId.current, text, checked: false };
-    setTodos([todo, ...todos]);
+  let lastId = useRef(4);
+
+  const addTodo = (todo) => {
+    const todoItem = { id: lastId.current, todo, completed: false };
+    setTodos([...todos, todoItem]);
     lastId.current++;
   };
 
-  const removeTodo = (seletedId) => {
-    const filterTodos = todos.filter((todo) => todo.id != seletedId);
-    setTodos(filterTodos);
+  const deleteTodo = (selectedId) => {
+    const nextState = todos.filter((item) => item.id !== selectedId);
+    setTodos(nextState);
   };
 
-  const toggleTodo = (seletedId) => {
-    const updateTodos = todos.map((todo) =>
-      todo.id == seletedId ? { ...todo, checked: !todo.checked } : todo,
+  const toggleTodo = (selectedId) => {
+    const nextState = todos.map((item) =>
+      item.id == selectedId ? { ...item, completed: !item.completed } : item,
     );
-    setTodos(updateTodos);
+    setTodos(nextState);
   };
 
   return (
     <>
       <TodoWriteForm addTodo={addTodo} />
-
-      <TodoList todos={todos} removeTodo={removeTodo} toggleTodo={toggleTodo} />
+      <TodoList todos={todos} deleteTodo={deleteTodo} toggleTodo={toggleTodo} />
     </>
   );
 }
